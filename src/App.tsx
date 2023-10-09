@@ -16,6 +16,7 @@ function App() {
     redirectUri: `${window.location.origin}/callback/linkedin`,
     isOnlyGetToken: true
   })
+  
   const { onGoogleConnect, isLoading: isGoogleLoading } = useGoogleConnection({
     onSuccess: (tokenResponse: any) => {
       tokenResponse && console.log("google data", tokenResponse)
