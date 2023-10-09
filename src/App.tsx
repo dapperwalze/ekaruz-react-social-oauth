@@ -6,12 +6,10 @@ import { isEmpty } from "lodash";
 
 function App() {
   const [googleData, setGoogleData] = useState<Record<string, any> | null>(null);
-  const REDIRECT_URI = `${typeof window === 'object' && window.location.origin}/callback/twitter`
-  const REDIRECT_URI2 = 'https://5e93-102-89-34-102.ngrok-free.app'
 
   const { onFacebookConnect, facebookData, isLoading: isFacebookLoading } = useFacebookConnection({})
-  const { onTwitterConnect, twitterData, isLoading } = useTwitterConnection({ clientId: process.env.RS_TWITTER_CLIENT_KEY as string, redirect_uri: REDIRECT_URI, isOnlyGetCode: true, isOnlyGetToken: false, clientKeys: `${process.env.RS_TWITTER_CLIENT_KEYS as string}` });
-  const { onSnapChatConnect, snapchatData, isLoading: isSnapchatLoading } = useSnapChatConnection({ clientId: process.env.RS_SNAPCHAT_CLIENT_KEY as string, clientSecret: process.env.RS_SNAPCHAT_BUSINESS_CLIENT_SECRET_KEY as string, redirect_uri: REDIRECT_URI2, isOnlyGetCode: true, isOnlyGetToken: false });
+  const { onTwitterConnect, twitterData, isLoading } = useTwitterConnection({ clientId: process.env.RS_TWITTER_CLIENT_KEY as string, redirect_uri: `${window.location.origin}/callback/twitter}`, isOnlyGetCode: true, isOnlyGetToken: false, clientKeys: `${process.env.RS_TWITTER_CLIENT_KEYS as string}` });
+  const { onSnapChatConnect, snapchatData, isLoading: isSnapchatLoading } = useSnapChatConnection({ clientId: process.env.RS_SNAPCHAT_CLIENT_KEY as string, clientSecret: process.env.RS_SNAPCHAT_BUSINESS_CLIENT_SECRET_KEY as string, redirect_uri: `${window.location.origin}/callback/snapchat}`, isOnlyGetCode: true, isOnlyGetToken: false });
   const { onLinkedInConnect, linkedInData, isLoading: isLinkedInLoading } = useLinkedInConnection({
     clientId: process.env.RS_LINKEDIN_CLIENT_KEY as string,
     clientSecret: process.env.RS_LINKEDIN_CLIENT_SECRET as string,
