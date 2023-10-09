@@ -1,17 +1,10 @@
 import './App.css';
 import { useTwitterConnection, useFacebookConnection, useGoogleConnection, useLinkedInConnection, useSnapChatConnection } from '@ekaruz/react-social-auth';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { isEmpty } from "lodash";
 
 
-type ParamsType = {
-  state: string;
-  code?: string;
-  error?: string;
-  error_description?: string;
-};
 function App() {
-  const [, setErrorMessage] = useState<string>('');
   const [googleData, setGoogleData] = useState<Record<string, any> | null>(null);
   const REDIRECT_URI = `${typeof window === 'object' && window.location.origin}/callback/twitter`
   const REDIRECT_URI2 = 'https://5e93-102-89-34-102.ngrok-free.app'
@@ -42,116 +35,6 @@ function App() {
   !isEmpty(facebookData) && console.log("facebook data:::", facebookData)
   !isEmpty(googleData) && console.log("google data:::", googleData)
 
-  const parse = (search: string) => {
-    const query = search.substring(1);
-    const vars = query.split('&');
-    const parsed: Record<string, any> = {};
-    for (let i = 0; i < vars.length; i++) {
-      const pair = vars[i].split('=');
-      if (pair.length > 1) {
-        parsed[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
-      }
-    }
-    return parsed;
-  }
-
-  useEffect(() => {
-    const params = parse(window.location.search) as ParamsType;
-    if (params.state !== localStorage.getItem('twitter_oauth2_state')) {
-      setErrorMessage('State does not match');
-
-    } else if (params.error) {
-      const errorMessage =
-        params.error_description || 'Login failed. Please try again.';
-      const bc = new BroadcastChannel("twitter-channel")
-      bc.postMessage({
-        error: params.error,
-        state: params.state,
-        errorMessage,
-        from: 'Twitter',
-      })
-      window.close();
-      // Close tab if user cancelled login
-      if (params.error === 'user_cancelled_login') {
-        window.close();
-      }
-    }
-    if (params.code) {
-      const bc = new BroadcastChannel("twitter-channel")
-      bc.postMessage({ code: params.code, state: params.state, from: 'Twitter' })
-      window.close();
-
-    }
-  }, []);
-
-  useEffect(() => {
-    const params = parse(window.location.search) as ParamsType;
-
-    if (params.state !== localStorage.getItem(`${process.env.RS_SNAPCHAT_OAUTH2_STATE}`)) {
-      setErrorMessage('State does not match');
-
-    } else if (params.error) {
-      const errorMessage =
-        params.error_description || 'Login failed. Please try again.';
-
-      window.opener &&
-        window.opener.postMessage(
-          {
-            error: params.error,
-            state: params.state,
-            errorMessage,
-            from: 'Snapchat',
-          },
-          window.location.origin,
-        );
-      window.close();
-
-      // Close tab if user cancelled login
-      if (params.error === 'user_cancelled_login') {
-        window.close();
-      }
-    }
-    if (params.code) {
-      window.opener &&
-        window.opener.postMessage(
-          { code: params.code, state: params.state, from: 'Snapchat' },
-          window.location.origin,
-        );
-      window.close();
-    }
-  }, []);
-
-  useEffect(() => {
-    const params = parse(window.location.search) as ParamsType;
-    if (params.state !== localStorage.getItem(`${process.env.RS_LINKEDIN_OAUTH2_STATE}`)) {
-      setErrorMessage('State does not match');
-    } else if (params.error) {
-      const errorMessage =
-        params.error_description || 'Login failed. Please try again.';
-      window.opener &&
-        window.opener.postMessage(
-          {
-            error: params.error,
-            state: params.state,
-            errorMessage,
-            from: 'LinkedIn',
-          },
-          window.location.origin,
-        );
-      // Close tab if user cancelled login
-      if (params.error === 'user_cancelled_login') {
-        window.close();
-      }
-    }
-    if (params.code) {
-      window.opener &&
-        window.opener.postMessage(
-          { code: params.code, state: params.state, from: 'LinkedIn' },
-          window.location.origin,
-        );
-      window.close();
-    }
-  }, []);
   return (
     <div className="App">
       <header className="App-header"> React Social Login Using OAuth 2.0</header>
