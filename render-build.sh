@@ -1,1 +1,0 @@
-#!/usr/bin/env bash# exit on errorset -o errexityarn installyarn build
