@@ -40,10 +40,10 @@ function App() {
       <div>View response in your console</div>
       <section>
         <button className={!isEmpty(facebookData) ? 'green': ''} disabled={isFacebookLoading} onClick={onFacebookConnect}>{isEmpty(facebookData) ? <span>Connect to Facebook</span>: <span>Connected to Facebook</span>}</button>
+        <button className={!isEmpty(googleData) ? 'green': ''} disabled={isGoogleLoading} onClick={onGoogleConnect}>{isEmpty(googleData) ? <span>Connect to Google</span>: <span>Connected to Google</span>}</button>
         <button className={!isEmpty(twitterData) ? 'green': ''} disabled={isLoading} onClick={onTwitterConnect}>{isEmpty(twitterData) ? <span>Connect to Twitter</span>: <span>Connected to Twitter</span>}</button>
         <button className={!isEmpty(snapchatData) ? 'green': ''} disabled={isSnapchatLoading} onClick={onSnapChatConnect}>{isEmpty(snapchatData) ? <span>Connect to Snapchat</span>: <span>Connected to Snapchat</span>}</button>
         <button className={!isEmpty(linkedInData) ? 'green': ''} disabled={isLinkedInLoading} onClick={onLinkedInConnect}>{isEmpty(linkedInData) ? <span>Connect to LinkedIn</span>: <span>Connected to LinkedIn</span>}</button>
-        <button className={!isEmpty(googleData) ? 'green': ''} disabled={isGoogleLoading} onClick={onGoogleConnect}>{isEmpty(googleData) ? <span>Connect to Google</span>: <span>Connected to Google</span>}</button>
       </section>
 
       <div ><button onClick={reloadPage}>Reset</button></div>
